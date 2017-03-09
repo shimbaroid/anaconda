@@ -21,3 +21,9 @@ func (a TwitterApi) GetSelf(v url.Values) (u User, err error) {
 	a.queryQueue <- query{a.baseUrl + "/account/verify_credentials.json", v, &u, _GET, response_ch}
 	return u, (<-response_ch).err
 }
+
+func (a TwitterApi) UpdateAccount(v url.Values) (user User, err error) {
+	response_ch := make(chan response)
+	a.queryQueue <- query{a.baseUrl + "/account/update_profile.json", v, &user, _POST, response_ch}
+	return user, (<-response_ch).err
+}
